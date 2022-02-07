@@ -16,6 +16,11 @@ defmodule Cqrs.Absinthe.MutationTest do
     }
   end
 
+  test "internal field id is not an arg" do
+    assert %{fields: %{create_person: %{args: args}}} = Absinthe.Schema.lookup_type(Schema, "RootMutationType")
+    refute Enum.member?(Map.keys(args), :id)
+  end
+
   test "can create a person", %{query: query} do
     assert {:ok, %{data: %{"createPerson" => person}}} =
              Absinthe.run(query, Schema, variables: %{"name" => "chris", "gender" => "MALE"})

@@ -6,9 +6,7 @@ defmodule Cqrs.Absinthe.Test.CreatePerson do
   field :name, :string
   field :gender, :enum, values: Person.genders(), default: :not_sure
 
-  field :id, :binary_id,
-    desc: "Id is set internally. Setting it will have no effect",
-    required: false
+  internal_field :id, :binary_id, desc: "Id is set internally. Setting it will have no effect", required: false
 
   option :send_notification, :boolean, default: false
 
