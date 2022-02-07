@@ -11,7 +11,7 @@ defmodule Cqrs.Absinthe.Log do
 
   defp put({level, entry}) do
     logs = Process.get(:cqrs_logs, [])
-    logs = logs ++ [%{level: level, date: DateTime.utc_now(), message: entry}]
+    logs = [%{level: level, date: DateTime.utc_now(), message: entry} | logs]
     Process.put(:cqrs_logs, logs)
     entry
   end
