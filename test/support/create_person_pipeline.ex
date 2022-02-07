@@ -1,5 +1,5 @@
-defmodule Cqrs.Absinthe.Test.CreatePersonHandler do
-  use Cqrs.CommandHandler
+defmodule Cqrs.Absinthe.Test.CreatePersonPipeline do
+  use Cqrs.CommandPipeline
 
   alias Cqrs.Repo
   alias Cqrs.Absinthe.Test.ReadModel.Person
