@@ -1,7 +1,7 @@
 defmodule Cqrs.Absinthe.Type do
   @moduledoc false
 
-  def from_ecto({name, :map, _field_opts}, opts) do
+  def from_message_field({name, :map, _field_opts}, opts) do
     operation = Keyword.fetch!(opts, :operation)
     field_name = Keyword.fetch!(opts, :field_name)
     message_module = Keyword.fetch!(opts, :message_module)
@@ -14,16 +14,16 @@ defmodule Cqrs.Absinthe.Type do
       raise Cqrs.Absinthe.Error, message: error_message
   end
 
-  def from_ecto({name, {:array, type}, _field_opts}, opts) do
-    type = from_ecto({name, type, nil}, opts)
+  def from_message_field({name, {:array, type}, _field_opts}, opts) do
+    type = from_message_field({name, type, nil}, opts)
     quote do: list_of(unquote(type))
   end
 
-  def from_ecto({name, Ecto.Enum, field_opts}, opts) do
-    from_ecto({name, :enum, field_opts}, opts)
+  def from_message_field({name, Ecto.Enum, field_opts}, opts) do
+    from_message_field({name, :enum, field_opts}, opts)
   end
 
-  def from_ecto({name, :enum, _field_opts}, opts) do
+  def from_message_field({name, :enum, _field_opts}, opts) do
     operation = Keyword.fetch!(opts, :operation)
     field_name = Keyword.fetch!(opts, :field_name)
     message_module = Keyword.fetch!(opts, :message_module)
@@ -36,10 +36,10 @@ defmodule Cqrs.Absinthe.Type do
     quote do: unquote(enum_type)
   end
 
-  def from_ecto({_name, :binary_id, _field_opts}, _opts), do: quote(do: :id)
-  def from_ecto({_name, :utc_datetime, _field_opts}, _opts), do: quote(do: :datetime)
+  def from_message_field({_name, :binary_id, _field_opts}, _opts), do: quote(do: :id)
+  def from_message_field({_name, :utc_datetime, _field_opts}, _opts), do: quote(do: :datetime)
 
-  def from_ecto({name, type, _field_opts}, opts) do
+  def from_message_field({name, type, _field_opts}, opts) do
     type =
       option_configured_type_mapping(name, opts) ||
         app_configured_type_mapping(type) ||

@@ -114,7 +114,7 @@ defmodule Cqrs.Absinthe.Args do
 
   defp update(fields, :add_absinthe_types, opts) do
     Enum.map(fields, fn {name, type, field_opts} = field ->
-      absinthe_type = Type.from_ecto(field, opts)
+      absinthe_type = Type.from_message_field(field, opts)
       {name, {type, absinthe_type}, field_opts}
     end)
   end
