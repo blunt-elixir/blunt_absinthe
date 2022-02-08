@@ -1,6 +1,8 @@
 defmodule Cqrs.Absinthe.Field do
   alias Cqrs.DispatchContext, as: Context
-  alias Cqrs.Absinthe.{AbsintheErrors, Args, Field, Log}
+  alias Cqrs.Absinthe.{AbsintheErrors, Args, Field, Log, Middleware}
+
+  @type message_module :: atom()
 
   @spec name(atom, keyword) :: atom()
   def name(module, opts) do
@@ -18,7 +20,7 @@ defmodule Cqrs.Absinthe.Field do
     Keyword.get(opts, :as, default_function_name)
   end
 
-  @spec generate_body(atom(), atom, atom, keyword) :: {:__block__, [], [...]}
+  @spec generate_body(atom(), atom, message_module, keyword) :: {:__block__, [], [...]}
   def generate_body(operation, field_name, message_module, opts) do
     opts =
       opts
@@ -27,14 +29,13 @@ defmodule Cqrs.Absinthe.Field do
       |> Keyword.put(:message_module, message_module)
 
     args = args(message_module, opts)
-
-    # TODO: message_module simple docs here
-    description = nil
+    description = description(message_module, opts)
+    {before_resolve, after_resolve} = middleware(opts)
 
     quote do
       unquote_splicing(args)
       description unquote(description)
-      # middleware unquote(before_resolve)
+      middleware unquote(before_resolve)
 
       resolve(fn parent, args, resolution ->
         Field.dispatch_and_resolve(
@@ -47,23 +48,29 @@ defmodule Cqrs.Absinthe.Field do
         )
       end)
 
-      # middleware unquote(after_resolve)
+      middleware unquote(after_resolve)
     end
   end
 
-  defp args(message_module, opts) do
+  @type middlware_function :: (resolution(), keyword() -> resolution())
+  @spec middleware(keyword) :: {middlware_function, middlware_function}
+  def middleware(opts), do: Middleware.middleware(opts)
+
+  @spec args(message_module, keyword) :: list
+  def args(message_module, opts) do
     fields = message_module.__schema_fields__()
     Args.from_message_fields(fields, opts)
+  end
+
+  def description(_message_module, _opts) do
+    # TODO: message_module simple docs here
+    nil
   end
 
   @type resolution :: Absinthe.Resolution.t()
   @spec dispatch_and_resolve(atom, atom, keyword, map, map, any) :: {:error, list} | {:ok, any}
   def dispatch_and_resolve(operation, message_module, query_opts, parent, args, _resolution) do
-    opts =
-      query_opts
-      |> Keyword.put(:return, :context)
-      |> Keyword.put(operation, true)
-      |> Keyword.put(:user_supplied_fields, Map.keys(args))
+    opts = put_dispatch_opts(query_opts, operation, args)
 
     results =
       args
@@ -92,5 +99,12 @@ defmodule Cqrs.Absinthe.Field do
 
         return_value
     end
+  end
+
+  def put_dispatch_opts(opts, operation, args) do
+    opts
+    |> Keyword.put(:return, :context)
+    |> Keyword.put(operation, true)
+    |> Keyword.put(:user_supplied_fields, Map.keys(args))
   end
 end

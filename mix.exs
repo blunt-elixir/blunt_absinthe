@@ -31,7 +31,7 @@ defmodule CqrsAbsinthe.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:absinthe, "~> 1.6"},
+      {:absinthe, "~> 1.7"},
       {:cqrs_tools, path: "../cqrs_tools"},
       #
       # test and dev deps
