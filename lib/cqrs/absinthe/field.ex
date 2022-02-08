@@ -63,6 +63,7 @@ defmodule Cqrs.Absinthe.Field do
       query_opts
       |> Keyword.put(:return, :context)
       |> Keyword.put(operation, true)
+      |> Keyword.put(:user_supplied_fields, Map.keys(args))
 
     results =
       args
