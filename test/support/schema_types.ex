@@ -19,6 +19,8 @@ defmodule Cqrs.Absinthe.Test.SchemaTypes do
       ]
   end
 
+  derive_input_object CreatePerson, arg_types: [gender: :gender]
+
   object :person_mutations do
     derive_mutation CreatePerson, :person, arg_types: [gender: :gender]
   end

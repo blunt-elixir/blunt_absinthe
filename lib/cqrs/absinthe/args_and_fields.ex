@@ -1,19 +1,20 @@
-defmodule Cqrs.Absinthe.Args do
+defmodule Cqrs.Absinthe.ArgsAndFields do
   @moduledoc false
 
   # TODO: Document parent_mappings and arg_transforms
 
   alias Cqrs.Absinthe.{Log, Type}
 
-  @spec from_message_fields(maybe_improper_list, keyword) :: list
-  def from_message_fields(fields, opts) when is_list(fields) do
+  @type arg_type :: :args | :fields
+  @spec from_message_fields(arg_type, list, keyword) :: list
+  def from_message_fields(arg_type, fields, opts) when is_list(fields) do
     fields
     |> filter(opts)
     |> reject(:internal, opts)
     |> reject(:parent_mapped_fields, opts)
     |> update(:add_absinthe_types, opts)
     |> update(:set_absinthe_type_opts, opts)
-    |> convert(:to_quoted_absinthe_args, opts)
+    |> convert(:to_absinthe_ast, arg_type, opts)
   end
 
   @spec resolve_message_input(map(), {atom(), map(), keyword()}) :: any
@@ -26,7 +27,7 @@ defmodule Cqrs.Absinthe.Args do
     |> update(:run_arg_transforms, {message_module, arg_transforms})
   end
 
-  defp convert(fields, :to_quoted_absinthe_args, opts) do
+  defp convert(fields, :to_absinthe_ast, :args, opts) do
     declared_required_field_names = Keyword.get(opts, :required, [])
 
     Enum.map(fields, fn {name, {_type, absinthe_type}, _field_opts} = field ->
@@ -36,6 +37,20 @@ defmodule Cqrs.Absinthe.Args do
         quote do: arg(unquote(name), non_null(unquote(type)), unquote(opts))
       else
         quote do: arg(unquote(name), unquote(type), unquote(opts))
+      end
+    end)
+  end
+
+  defp convert(fields, :to_absinthe_ast, :fields, opts) do
+    declared_required_field_names = Keyword.get(opts, :required, [])
+
+    Enum.map(fields, fn {name, {_type, absinthe_type}, _field_opts} = field ->
+      {type, opts} = absinthe_type
+
+      if required?(field, declared_required_field_names) do
+        quote do: field(unquote(name), non_null(unquote(type)), unquote(opts))
+      else
+        quote do: field(unquote(name), unquote(type), unquote(opts))
       end
     end)
   end

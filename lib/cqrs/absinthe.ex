@@ -1,6 +1,6 @@
 defmodule Cqrs.Absinthe do
-  alias Cqrs.Absinthe.{Message, Mutation, Query}
   alias Cqrs.Absinthe.Enum, as: AbsintheEnum
+  alias Cqrs.Absinthe.{Object, Message, Mutation, Query}
 
   defmodule Error do
     defexception [:message]
@@ -49,6 +49,13 @@ defmodule Cqrs.Absinthe do
       @mutations unquote(command_module)
       unquote(field)
     end
+  end
+
+  @spec derive_input_object(atom(), keyword()) :: term()
+  defmacro derive_input_object(message_module, opts \\ []) do
+    opts = Macro.escape(opts)
+    object = quote do: Object.generate(:input, unquote(message_module), unquote(opts))
+    Module.eval_quoted(__CALLER__, object)
   end
 
   defmacro __after_compile__(_env, _bytecode) do

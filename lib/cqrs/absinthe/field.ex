@@ -1,6 +1,6 @@
 defmodule Cqrs.Absinthe.Field do
   alias Cqrs.DispatchContext, as: Context
-  alias Cqrs.Absinthe.{AbsintheErrors, Args, Field, Log, Middleware}
+  alias Cqrs.Absinthe.{AbsintheErrors, ArgsAndFields, Field, Log, Middleware}
 
   @type message_module :: atom()
 
@@ -59,7 +59,7 @@ defmodule Cqrs.Absinthe.Field do
   @spec args(message_module, keyword) :: list
   def args(message_module, opts) do
     fields = message_module.__schema_fields__()
-    Args.from_message_fields(fields, opts)
+    ArgsAndFields.from_message_fields(:args, fields, opts)
   end
 
   def description(_message_module, _opts) do
@@ -74,7 +74,7 @@ defmodule Cqrs.Absinthe.Field do
 
     results =
       args
-      |> Args.resolve_message_input({message_module, parent, query_opts})
+      |> ArgsAndFields.resolve_message_input({message_module, parent, query_opts})
       |> message_module.new()
       |> message_module.dispatch(opts)
 
@@ -82,29 +82,17 @@ defmodule Cqrs.Absinthe.Field do
 
     case results do
       {:error, %Context{} = context} ->
-        return_value = {:error, AbsintheErrors.from_dispatch_context(context)}
-
-        context
-        |> Context.put_pipeline(:absinthe_resolve, return_value)
-        |> Context.ship()
-
-        return_value
+        {:error, AbsintheErrors.from_dispatch_context(context)}
 
       {:ok, %Context{} = context} ->
-        return_value = {:ok, Context.get_last_pipeline(context)}
-
-        context
-        |> Context.put_pipeline(:absinthe_resolve, return_value)
-        |> Context.ship()
-
-        return_value
+        {:ok, Context.get_last_pipeline(context)}
     end
   end
 
   def put_dispatch_opts(opts, operation, args) do
     opts
     |> Keyword.put(:return, :context)
-    |> Keyword.put(operation, true)
+    |> Keyword.put(:dispatched_from, operation)
     |> Keyword.put(:user_supplied_fields, Map.keys(args))
   end
 end
