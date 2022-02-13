@@ -86,7 +86,7 @@ defmodule Cqrs.Absinthe.Field do
 
         context
         |> Context.put_pipeline(:absinthe_resolve, return_value)
-        |> Context.ship()
+        |> Context.Shipper.ship()
 
         return_value
 
@@ -95,7 +95,7 @@ defmodule Cqrs.Absinthe.Field do
 
         context
         |> Context.put_pipeline(:absinthe_resolve, return_value)
-        |> Context.ship()
+        |> Context.Shipper.ship()
 
         return_value
     end
