@@ -1,10 +1,9 @@
 defmodule Cqrs.Absinthe.Type do
   @moduledoc false
 
-  def from_message_field({name, :map, _field_opts}, opts) do
+  def from_message_field(message_module, {name, :map, _field_opts}, opts) do
     operation = Keyword.fetch!(opts, :operation)
     field_name = Keyword.fetch!(opts, :field_name)
-    message_module = Keyword.fetch!(opts, :message_module)
 
     error_message =
       "#{operation} field `#{field_name}` -- from module `#{inspect(message_module)}` -- requires an arg_types mapping for the argument '#{name}'"
@@ -14,19 +13,18 @@ defmodule Cqrs.Absinthe.Type do
       raise Cqrs.Absinthe.Error, message: error_message
   end
 
-  def from_message_field({name, {:array, type}, _field_opts}, opts) do
-    type = from_message_field({name, type, nil}, opts)
+  def from_message_field(message_module, {name, {:array, type}, _field_opts}, opts) do
+    type = from_message_field(message_module, {name, type, nil}, opts)
     quote do: list_of(unquote(type))
   end
 
-  def from_message_field({name, Ecto.Enum, field_opts}, opts) do
-    from_message_field({name, :enum, field_opts}, opts)
+  def from_message_field(message_module, {name, Ecto.Enum, field_opts}, opts) do
+    from_message_field(message_module, {name, :enum, field_opts}, opts)
   end
 
-  def from_message_field({name, :enum, _field_opts}, opts) do
+  def from_message_field(message_module, {name, :enum, _field_opts}, opts) do
     operation = Keyword.fetch!(opts, :operation)
     field_name = Keyword.fetch!(opts, :field_name)
-    message_module = Keyword.fetch!(opts, :message_module)
 
     error_message =
       "#{operation} field '#{field_name}' -- from module '#{inspect(message_module)}' -- requires an arg_types mapping for the argument '#{name}'"
@@ -36,10 +34,10 @@ defmodule Cqrs.Absinthe.Type do
     quote do: unquote(enum_type)
   end
 
-  def from_message_field({_name, :binary_id, _field_opts}, _opts), do: quote(do: :id)
-  def from_message_field({_name, :utc_datetime, _field_opts}, _opts), do: quote(do: :datetime)
+  def from_message_field(_message_module, {_name, :binary_id, _field_opts}, _opts), do: quote(do: :id)
+  def from_message_field(_message_module, {_name, :utc_datetime, _field_opts}, _opts), do: quote(do: :datetime)
 
-  def from_message_field({name, type, _field_opts}, opts) do
+  def from_message_field(_message_module, {name, type, _field_opts}, opts) do
     type =
       option_configured_type_mapping(name, opts) ||
         app_configured_type_mapping(type) ||

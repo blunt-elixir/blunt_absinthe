@@ -27,10 +27,9 @@ defmodule Cqrs.Absinthe.Field do
       opts
       |> Keyword.put(:operation, operation)
       |> Keyword.put(:field_name, field_name)
-      |> Keyword.put(:message_module, message_module)
 
     args = args(message_module, opts)
-    description = description(message_module, opts)
+    description = description(message_module)
     {before_resolve, after_resolve} = middleware(opts)
 
     quote do
@@ -58,15 +57,11 @@ defmodule Cqrs.Absinthe.Field do
   def middleware(opts), do: Middleware.middleware(opts)
 
   @spec args(message_module, keyword) :: list
-  def args(message_module, opts) do
-    fields = Metadata.fields(message_module)
-    Args.from_message_fields(fields, opts)
-  end
+  def args(message_module, opts),
+    do: Args.from_message_fields(message_module, opts)
 
-  def description(_message_module, _opts) do
-    # TODO: message_module simple docs here
-    nil
-  end
+  def description(message_module),
+    do: Metadata.shortdocs(message_module)
 
   @type resolution :: Absinthe.Resolution.t()
   @spec dispatch_and_resolve(atom, atom, keyword, map, map, any) :: {:error, list} | {:ok, any}

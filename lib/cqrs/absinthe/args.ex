@@ -3,15 +3,19 @@ defmodule Cqrs.Absinthe.Args do
 
   # TODO: Document parent_mappings and arg_transforms
 
+  alias Cqrs.Message.Metadata
   alias Cqrs.Absinthe.{Log, Type}
 
-  @spec from_message_fields(maybe_improper_list, keyword) :: list
-  def from_message_fields(fields, opts) when is_list(fields) do
-    fields
+  @type message_module :: atom()
+  @spec from_message_fields(message_module, keyword) :: list
+
+  def from_message_fields(message_module, opts) do
+    message_module
+    |> Metadata.fields()
     |> filter(opts)
     |> reject(:internal, opts)
     |> reject(:parent_mapped_fields, opts)
-    |> update(:add_absinthe_types, opts)
+    |> update(:add_absinthe_types, message_module, opts)
     |> update(:set_absinthe_type_opts, opts)
     |> convert(:to_quoted_absinthe_args, opts)
   end
@@ -112,10 +116,10 @@ defmodule Cqrs.Absinthe.Args do
     end)
   end
 
-  defp update(fields, :add_absinthe_types, opts) do
-    Enum.map(fields, fn {name, type, field_opts} = field ->
-      absinthe_type = Type.from_message_field(field, opts)
-      {name, {type, absinthe_type}, field_opts}
+  defp update(fields, :add_absinthe_types, message_module, opts) do
+    Enum.map(fields, fn {field_name, type, field_opts} = field ->
+      absinthe_type = Type.from_message_field(message_module, field, opts)
+      {field_name, {type, absinthe_type}, field_opts}
     end)
   end
 
