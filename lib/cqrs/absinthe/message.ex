@@ -2,6 +2,7 @@ defmodule Cqrs.Absinthe.Message do
   @moduledoc false
 
   alias Cqrs.Absinthe.Error
+  alias Cqrs.Message.Metadata
 
   def validate!(:command, module) do
     error = "#{inspect(module)} is not a valid #{inspect(Cqrs.Command)}"
@@ -16,7 +17,7 @@ defmodule Cqrs.Absinthe.Message do
   defp do_validate!(module, type, error) do
     case Code.ensure_compiled(module) do
       {:module, module} ->
-        unless function_exported?(module, :__message_type__, 0) && module.__message_type__() == type do
+        unless Metadata.is_message_type?(module, type) do
           raise Error, message: error
         end
 

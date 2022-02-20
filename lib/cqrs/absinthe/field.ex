@@ -1,4 +1,5 @@
 defmodule Cqrs.Absinthe.Field do
+  alias Cqrs.Message.Metadata
   alias Cqrs.DispatchContext, as: Context
   alias Cqrs.Absinthe.{AbsintheErrors, Args, Field, Log, Middleware}
 
@@ -58,7 +59,7 @@ defmodule Cqrs.Absinthe.Field do
 
   @spec args(message_module, keyword) :: list
   def args(message_module, opts) do
-    fields = message_module.__schema_fields__()
+    fields = Metadata.fields(message_module)
     Args.from_message_fields(fields, opts)
   end
 
