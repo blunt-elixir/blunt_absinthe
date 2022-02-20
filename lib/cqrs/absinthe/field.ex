@@ -32,6 +32,8 @@ defmodule Cqrs.Absinthe.Field do
     description = description(message_module)
     {before_resolve, after_resolve} = middleware(opts)
 
+    Cqrs.Message.Compilation.log(message_module, "regenerated #{operation} #{field_name}")
+
     quote do
       unquote_splicing(args)
       description unquote(description)
