@@ -16,6 +16,13 @@ defmodule Cqrs.Absinthe.MutationTest do
     }
   end
 
+  test "field documentation is copied from Query" do
+    assert %{description: "Creates's a person."} =
+             Absinthe.Schema.lookup_type(Schema, "RootMutationType")
+             |> Map.get(:fields)
+             |> Map.get(:create_person)
+  end
+
   test "internal field id is not an arg" do
     assert %{fields: %{create_person: %{args: args}}} = Absinthe.Schema.lookup_type(Schema, "RootMutationType")
     refute Enum.member?(Map.keys(args), :id)

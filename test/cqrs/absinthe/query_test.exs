@@ -27,6 +27,13 @@ defmodule Cqrs.Absinthe.QueryTest do
     }
   end
 
+  test "field documentation is copied from Query" do
+    assert %{description: "Get's a person."} =
+             Absinthe.Schema.lookup_type(Schema, "RootQueryType")
+             |> Map.get(:fields)
+             |> Map.get(:get_person)
+  end
+
   test "get_user is a valid query", %{person_id: person_id, query: query} do
     assert {:ok, %{data: %{"getPerson" => %{"id" => ^person_id}}}} =
              Absinthe.run(query, Schema, variables: %{"id" => person_id})

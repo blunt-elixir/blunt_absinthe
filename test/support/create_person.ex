@@ -1,6 +1,9 @@
 defmodule Cqrs.Absinthe.Test.CreatePerson do
-  use Cqrs.Command
+  @moduledoc """
+  Creates's a person.
+  """
 
+  use Cqrs.Command
   alias Cqrs.Absinthe.Test.ReadModel.Person
 
   field :name, :string
