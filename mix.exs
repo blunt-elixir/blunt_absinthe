@@ -32,8 +32,8 @@ defmodule CqrsAbsinthe.MixProject do
   defp deps do
     [
       {:absinthe, "~> 1.7"},
-      # {:cqrs_tools, path: "../cqrs_tools", override: true},
-      {:cqrs_tools, github: "elixir-cqrs/cqrs_tools"},
+      {:cqrs_tools, path: "../cqrs_tools", override: true},
+      # {:cqrs_tools, github: "elixir-cqrs/cqrs_tools"},
       #
       # test and dev deps
       {:etso, "~> 0.1.6", only: [:test]},

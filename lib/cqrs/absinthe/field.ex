@@ -1,5 +1,4 @@
 defmodule Cqrs.Absinthe.Field do
-  alias Cqrs.Message.Metadata
   alias Cqrs.DispatchContext, as: Context
   alias Cqrs.Absinthe.{AbsintheErrors, Args, Field, Log, Middleware}
 
@@ -63,7 +62,7 @@ defmodule Cqrs.Absinthe.Field do
     do: Args.from_message_fields(message_module, opts)
 
   def description(message_module),
-    do: Metadata.shortdocs(message_module)
+    do: message_module.__doc__(:short)
 
   @type resolution :: Absinthe.Resolution.t()
   @spec dispatch_and_resolve(atom, atom, keyword, map, map, any) :: {:error, list} | {:ok, any}
