@@ -1,4 +1,4 @@
-defmodule Cqrs.Absinthe.Log do
+defmodule Blunt.Absinthe.Log do
   @spec debug(any) :: any()
   @spec warning(any) :: any()
   @spec error(any) :: any()
@@ -10,9 +10,9 @@ defmodule Cqrs.Absinthe.Log do
   def info(entry), do: put({:info, entry})
 
   defp put({level, entry}) do
-    logs = Process.get(:cqrs_logs, [])
+    logs = Process.get(:blunt_logs, [])
     logs = [%{level: level, date: DateTime.utc_now(), message: entry} | logs]
-    Process.put(:cqrs_logs, logs)
+    Process.put(:blunt_logs, logs)
     entry
   end
 
@@ -21,7 +21,7 @@ defmodule Cqrs.Absinthe.Log do
   @spec dump :: :ok
 
   def dump do
-    :cqrs_logs
+    :blunt_logs
     |> Process.get([])
     |> Enum.sort_by(& &1.date)
     |> Enum.each(fn %{level: level, message: message} ->

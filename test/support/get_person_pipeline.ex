@@ -1,8 +1,8 @@
-defmodule Cqrs.Absinthe.Test.GetPersonPipeline do
-  use Cqrs.QueryPipeline
+defmodule Blunt.Absinthe.Test.GetPersonPipeline do
+  use Blunt.QueryPipeline
 
-  alias Cqrs.Repo
-  alias Cqrs.Absinthe.Test.ReadModel.Person
+  alias Blunt.Repo
+  alias Blunt.Absinthe.Test.ReadModel.Person
 
   @impl true
   def create_query(filters, _context) do

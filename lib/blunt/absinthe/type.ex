@@ -1,4 +1,4 @@
-defmodule Cqrs.Absinthe.Type do
+defmodule Blunt.Absinthe.Type do
   @moduledoc false
 
   def from_message_field(message_module, {name, :map, _field_opts}, opts) do
@@ -10,7 +10,7 @@ defmodule Cqrs.Absinthe.Type do
 
     option_configured_type_mapping(name, opts) ||
       app_configured_type_mapping(:map) ||
-      raise Cqrs.Absinthe.Error, message: error_message
+      raise Blunt.Absinthe.Error, message: error_message
   end
 
   def from_message_field(message_module, {name, {:array, type}, _field_opts}, opts) do
@@ -29,7 +29,7 @@ defmodule Cqrs.Absinthe.Type do
     error_message =
       "#{operation} field '#{field_name}' -- from module '#{inspect(message_module)}' -- requires an arg_types mapping for the argument '#{name}'"
 
-    enum_type = option_configured_type_mapping(name, opts) || raise Cqrs.Absinthe.Error, message: error_message
+    enum_type = option_configured_type_mapping(name, opts) || raise Blunt.Absinthe.Error, message: error_message
 
     quote do: unquote(enum_type)
   end
@@ -47,7 +47,7 @@ defmodule Cqrs.Absinthe.Type do
   end
 
   defp app_configured_type_mapping(type) do
-    :cqrs_tools
+    :blunt
     |> Application.get_env(:absinthe, [])
     |> Keyword.get(:type_mappings, [])
     |> Keyword.get(type)

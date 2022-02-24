@@ -1,6 +1,6 @@
-defmodule Cqrs.Absinthe.MutationTest do
+defmodule Blunt.Absinthe.MutationTest do
   use ExUnit.Case
-  alias Cqrs.Absinthe.Test.Schema
+  alias Blunt.Absinthe.Test.Schema
 
   setup do
     %{

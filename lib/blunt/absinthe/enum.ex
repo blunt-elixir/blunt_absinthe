@@ -1,5 +1,5 @@
-defmodule Cqrs.Absinthe.Enum do
-  alias Cqrs.Absinthe.Error
+defmodule Blunt.Absinthe.Enum do
+  alias Blunt.Absinthe.Error
 
   def generate_type(enum_name, {enum_source_module, field_name}) do
     values =

@@ -1,8 +1,8 @@
-defmodule Cqrs.Absinthe.Test.CreatePersonPipeline do
-  use Cqrs.CommandPipeline
+defmodule Blunt.Absinthe.Test.CreatePersonPipeline do
+  use Blunt.CommandPipeline
 
-  alias Cqrs.Repo
-  alias Cqrs.Absinthe.Test.ReadModel.Person
+  alias Blunt.Repo
+  alias Blunt.Absinthe.Test.ReadModel.Person
 
   @impl true
   def handle_dispatch(command, _context) do

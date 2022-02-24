@@ -1,6 +1,6 @@
-defmodule Cqrs.Absinthe.Test.Schema do
+defmodule Blunt.Absinthe.Test.Schema do
   use Absinthe.Schema
-  import_types Cqrs.Absinthe.Test.SchemaTypes
+  import_types Blunt.Absinthe.Test.SchemaTypes
 
   query do
     import_fields :person_queries

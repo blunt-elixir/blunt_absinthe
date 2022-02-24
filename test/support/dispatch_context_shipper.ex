@@ -1,5 +1,5 @@
-defmodule Cqrs.Absinthe.Test.DispatchContextShipper do
-  @behaviour Cqrs.DispatchContext.Shipper
+defmodule Blunt.Absinthe.Test.DispatchContextShipper do
+  @behaviour Blunt.DispatchContext.Shipper
 
   def ship(context) do
     case System.get_env("CQRS_ABSINTHE_DEBUG") do

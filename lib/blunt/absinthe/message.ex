@@ -1,16 +1,16 @@
-defmodule Cqrs.Absinthe.Message do
+defmodule Blunt.Absinthe.Message do
   @moduledoc false
 
-  alias Cqrs.Absinthe.Error
-  alias Cqrs.Message.Metadata
+  alias Blunt.Absinthe.Error
+  alias Blunt.Message.Metadata
 
   def validate!(:command, module) do
-    error = "#{inspect(module)} is not a valid #{inspect(Cqrs.Command)}"
+    error = "#{inspect(module)} is not a valid #{inspect(Blunt.Command)}"
     do_validate!(module, :command, error)
   end
 
   def validate!(:query, module) do
-    error = "#{inspect(module)} is not a valid #{inspect(Cqrs.Query)}"
+    error = "#{inspect(module)} is not a valid #{inspect(Blunt.Query)}"
     do_validate!(module, :query, error)
   end
 

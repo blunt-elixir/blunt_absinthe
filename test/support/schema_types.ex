@@ -1,8 +1,8 @@
-defmodule Cqrs.Absinthe.Test.SchemaTypes do
-  use Cqrs.Absinthe
+defmodule Blunt.Absinthe.Test.SchemaTypes do
+  use Blunt.Absinthe
   use Absinthe.Schema.Notation
 
-  alias Cqrs.Absinthe.Test.{CreatePerson, GetPerson}
+  alias Blunt.Absinthe.Test.{CreatePerson, GetPerson}
 
   derive_enum :gender, {CreatePerson, :gender}
 

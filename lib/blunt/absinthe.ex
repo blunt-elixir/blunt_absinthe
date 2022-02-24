@@ -1,6 +1,6 @@
-defmodule Cqrs.Absinthe do
-  alias Cqrs.Absinthe.{Message, Mutation, Query}
-  alias Cqrs.Absinthe.Enum, as: AbsintheEnum
+defmodule Blunt.Absinthe do
+  alias Blunt.Absinthe.{Message, Mutation, Query}
+  alias Blunt.Absinthe.Enum, as: AbsintheEnum
 
   defmodule Error do
     defexception [:message]
@@ -12,9 +12,9 @@ defmodule Cqrs.Absinthe do
       Module.register_attribute(__MODULE__, :mutations, accumulate: true)
 
       # use Absinthe.Schema
-      import Cqrs.Absinthe, only: :macros
+      import Blunt.Absinthe, only: :macros
 
-      @after_compile Cqrs.Absinthe
+      @after_compile Blunt.Absinthe
     end
   end
 

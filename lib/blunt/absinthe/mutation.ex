@@ -1,7 +1,7 @@
-defmodule Cqrs.Absinthe.Mutation do
+defmodule Blunt.Absinthe.Mutation do
   @moduledoc false
 
-  alias Cqrs.Absinthe.Field
+  alias Blunt.Absinthe.Field
 
   @spec generate_field(atom, any, keyword) :: {:field, [], [...]}
   def generate_field(command_module, return_type, opts) do

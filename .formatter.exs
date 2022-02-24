@@ -10,7 +10,7 @@ locals_without_parens = [
 [
   locals_without_parens: locals_without_parens,
   line_length: 120,
-  import_deps: [:absinthe, :cqrs_tools, :ecto],
+  import_deps: [:absinthe, :blunt, :ecto],
   export: [
     locals_without_parens: locals_without_parens
   ],

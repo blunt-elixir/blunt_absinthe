@@ -1,5 +1,5 @@
-defmodule Cqrs.Absinthe.Test.GetPerson do
-  use Cqrs.Query
+defmodule Blunt.Absinthe.Test.GetPerson do
+  use Blunt.Query
 
   @moduledoc """
   Get's a person.
@@ -9,5 +9,5 @@ defmodule Cqrs.Absinthe.Test.GetPerson do
 
   field :error_out, :boolean, default: false
 
-  binding :person, CqrsToolsBoundedContext.QueryTest.ReadModel.Person
+  binding :person, BluntBoundedContext.QueryTest.ReadModel.Person
 end

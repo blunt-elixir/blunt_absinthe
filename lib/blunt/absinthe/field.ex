@@ -1,6 +1,6 @@
-defmodule Cqrs.Absinthe.Field do
-  alias Cqrs.DispatchContext, as: Context
-  alias Cqrs.Absinthe.{AbsintheErrors, Args, Field, Log, Middleware}
+defmodule Blunt.Absinthe.Field do
+  alias Blunt.DispatchContext, as: Context
+  alias Blunt.Absinthe.{AbsintheErrors, Args, Field, Log, Middleware}
 
   @type message_module :: atom()
 
@@ -31,7 +31,7 @@ defmodule Cqrs.Absinthe.Field do
     description = description(message_module)
     {before_resolve, after_resolve} = middleware(opts)
 
-    Cqrs.Message.Compilation.log(message_module, "regenerated #{operation} #{field_name}")
+    Blunt.Message.Compilation.log(message_module, "regenerated #{operation} #{field_name}")
 
     quote do
       unquote_splicing(args)

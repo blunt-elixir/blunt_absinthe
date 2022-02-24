@@ -1,10 +1,10 @@
-defmodule Cqrs.Absinthe.Test.CreatePerson do
+defmodule Blunt.Absinthe.Test.CreatePerson do
   @moduledoc """
   Creates's a person.
   """
 
-  use Cqrs.Command
-  alias Cqrs.Absinthe.Test.ReadModel.Person
+  use Blunt.Command
+  alias Blunt.Absinthe.Test.ReadModel.Person
 
   field :name, :string
   field :gender, :enum, values: Person.genders(), default: :not_sure

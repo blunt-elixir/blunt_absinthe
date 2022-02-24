@@ -1,10 +1,10 @@
-defmodule Cqrs.Absinthe.Args do
+defmodule Blunt.Absinthe.Args do
   @moduledoc false
 
   # TODO: Document parent_mappings and arg_transforms
 
-  alias Cqrs.Message.Metadata
-  alias Cqrs.Absinthe.{Log, Type}
+  alias Blunt.Message.Metadata
+  alias Blunt.Absinthe.{Log, Type}
 
   @type message_module :: atom()
   @spec from_message_fields(message_module, keyword) :: list

@@ -1,4 +1,4 @@
-defmodule Cqrs.Absinthe.Test.ReadModel do
+defmodule Blunt.Absinthe.Test.ReadModel do
   defmodule Person do
     use Ecto.Schema
 

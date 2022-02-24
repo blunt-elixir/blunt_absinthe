@@ -1,8 +1,8 @@
-defmodule Cqrs.Absinthe.EnumTest do
+defmodule Blunt.Absinthe.EnumTest do
   use ExUnit.Case, async: true
 
   alias Absinthe.Type.Enum
-  alias Cqrs.Absinthe.Test.Schema
+  alias Blunt.Absinthe.Test.Schema
 
   test "enum is defined" do
     assert %Enum{values: values} = Absinthe.Schema.lookup_type(Schema, :gender)

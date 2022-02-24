@@ -1,5 +1,5 @@
-defmodule Cqrs.Absinthe.Middleware do
-  alias Cqrs.Absinthe.Middleware
+defmodule Blunt.Absinthe.Middleware do
+  alias Blunt.Absinthe.Middleware
 
   def middleware(opts) do
     before_resolve = Keyword.get(opts, :before_resolve, &Middleware.identity/2)

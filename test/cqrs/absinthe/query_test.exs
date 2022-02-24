@@ -1,9 +1,9 @@
-defmodule Cqrs.Absinthe.QueryTest do
+defmodule Blunt.Absinthe.QueryTest do
   use ExUnit.Case
 
-  alias Cqrs.Repo
-  alias Cqrs.Absinthe.Test.Schema
-  alias Cqrs.Absinthe.Test.ReadModel.Person
+  alias Blunt.Repo
+  alias Blunt.Absinthe.Test.Schema
+  alias Blunt.Absinthe.Test.ReadModel.Person
 
   defp create_person(name) do
     %{id: UUID.uuid4(), name: name}

@@ -1,18 +1,18 @@
-defmodule CqrsAbsinthe.MixProject do
+defmodule BluntAbsinthe.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :cqrs_tools_absinthe,
+      app: :blunt_absinthe,
       version: "0.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      source_url: "https://github.com/elixir-cqrs/cqrs_tools_absinthe",
+      source_url: "https://github.com/elixir-blunt/blunt_absinthe",
       package: [
-        description: "Absinthe macros for `cqrs_tools` commands and queries",
+        description: "Absinthe macros for `blunt` commands and queries",
         licenses: ["MIT"],
-        links: %{"GitHub" => "https://github.com/elixir-cqrs/cqrs_tools_absinthe"}
+        links: %{"GitHub" => "https://github.com/elixir-blunt/blunt_absinthe"}
       ],
       elixirc_paths: elixirc_paths(Mix.env())
     ]
@@ -32,8 +32,8 @@ defmodule CqrsAbsinthe.MixProject do
   defp deps do
     [
       {:absinthe, "~> 1.7"},
-      # {:cqrs_tools, path: "../cqrs_tools", override: true},
-      {:cqrs_tools, github: "elixir-cqrs/cqrs_tools"},
+      # {:blunt, path: "../blunt", override: true},
+      {:blunt, github: "blunt-elixir/blunt"},
       #
       # test and dev deps
       {:etso, "~> 0.1.6", only: [:test]},

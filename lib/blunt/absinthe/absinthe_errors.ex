@@ -1,7 +1,7 @@
-defmodule Cqrs.Absinthe.AbsintheErrors do
-  alias Cqrs.DispatchContext
+defmodule Blunt.Absinthe.AbsintheErrors do
+  alias Blunt.DispatchContext
 
-  @type context :: Cqrs.DispatchContext.t()
+  @type context :: Blunt.DispatchContext.t()
 
   @spec from_dispatch_context(context()) :: list
 
