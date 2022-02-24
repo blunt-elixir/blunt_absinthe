@@ -1,4 +1,5 @@
 defmodule Blunt.Absinthe.Field do
+  @moduledoc false
   alias Blunt.DispatchContext, as: Context
   alias Blunt.Absinthe.{AbsintheErrors, Args, Field, Log, Middleware}
 

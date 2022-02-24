@@ -1,4 +1,5 @@
 defmodule Blunt.Absinthe.Enum do
+  @moduledoc false
   alias Blunt.Absinthe.Error
 
   def generate_type(enum_name, {enum_source_module, field_name}) do

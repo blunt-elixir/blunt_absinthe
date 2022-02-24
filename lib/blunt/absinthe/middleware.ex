@@ -1,4 +1,5 @@
 defmodule Blunt.Absinthe.Middleware do
+  @moduledoc false
   alias Blunt.Absinthe.Middleware
 
   def middleware(opts) do

@@ -1,4 +1,6 @@
 defmodule Blunt.Absinthe.Log do
+  @moduledoc false
+
   @spec debug(any) :: any()
   @spec warning(any) :: any()
   @spec error(any) :: any()

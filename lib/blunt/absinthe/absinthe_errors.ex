@@ -1,4 +1,6 @@
 defmodule Blunt.Absinthe.AbsintheErrors do
+  @moduledoc false
+
   alias Blunt.DispatchContext
 
   @type context :: Blunt.DispatchContext.t()
